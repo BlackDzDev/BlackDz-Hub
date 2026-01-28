@@ -210,76 +210,92 @@
             letter-spacing: 2px;
         }
 
-/* --- MOBILE SUPPORT (CORRIGIDO) --- */
+/* --- MOBILE SUPPORT (BLINDADO) --- */
 @media (max-width: 900px) {
     
-    /* 1. Corrige o scroll e o corte de tela no mobile */
+    /* 1. Reset Global do Body */
     body {
-        justify-content: flex-start; /* Começa do topo, permite scroll */
-        padding-top: 40px;
+        justify-content: flex-start;
+        padding-top: 20px;
         padding-bottom: 40px;
-        height: auto; /* Altura se adapta ao conteúdo */
+        height: auto;
+        overflow-y: auto; /* Garante scroll vertical */
     }
 
-    h1 { font-size: 3rem; margin-bottom: 20px; }
+    h1 { font-size: 2.5rem; margin-bottom: 20px; }
     
-    /* 2. Organiza os painéis em coluna */
+    /* 2. Container em Coluna */
     .gateway-container {
         flex-direction: column;
-        height: auto;
-        gap: 30px; /* Espaço entre os cards */
+        height: auto !important; /* Ignora altura fixa */
+        gap: 20px;
         margin-bottom: 40px;
+        display: flex;
     }
 
-    /* 3. Estilo do Card no Mobile (Sem hover, sempre ativo) */
+    /* 3. O CARD (Estado Normal) */
     .panel {
-        flex: none; /* IMPORTANTE: Impede o card de sumir/colapsar */
-        width: 100%;
-        height: 250px; /* Altura fixa garantida */
-        clip-path: none; /* Remove o corte angular */
+        flex: none !important; /* !important impede que o card estique/encolha */
+        width: 100% !important;
+        height: 240px !important;
+        clip-path: none !important; /* Remove cortes angulares */
+        margin: 0 !important;
         border: 1px solid #333;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
 
-    /* Efeitos visuais sempre ativos (sem precisar clicar) */
+    /* 4. CORREÇÃO DO BUG (O Pulo do Gato) */
+    /* Isso impede que os OUTROS cards escureçam ou diminuam quando você toca em um */
+    .gateway-container:hover .panel:not(:hover) {
+        flex: none !important;
+        filter: none !important; /* Não escurece os outros */
+        transform: none !important;
+        width: 100% !important;
+    }
+
+    /* 5. CORREÇÃO DO CLIQUE (Ao tocar/segurar) */
+    /* Isso impede que o card tocado tente expandir */
+    .panel:hover, .panel:active, .panel:focus {
+        flex: none !important;
+        transform: none !important; /* Remove o zoom exagerado */
+        height: 240px !important;
+        border-color: #333; /* Mantém a borda estável */
+    }
+    
+    /* Recupera a cor da borda específica no hover/active sem bugar o tamanho */
+    .panel.store:hover, .panel.store:active { border-bottom: 2px solid var(--neon-store) !important; }
+    .panel.dev:hover, .panel.dev:active { border-bottom: 2px solid var(--neon-dev) !important; }
+    .panel.manga:hover, .panel.manga:active { border-bottom: 2px solid var(--neon-manga) !important; }
+
+    /* 6. Conteúdo Visual (Sempre Ativo) */
+    /* Garante que imagem e texto apareçam sem precisar tocar */
     .panel .panel-bg {
-        filter: grayscale(0%) brightness(0.6); /* Imagem colorida, mas escura o suficiente para ler */
-        transform: scale(1);
+        filter: grayscale(0%) brightness(0.5) !important;
+        transform: scale(1) !important;
     }
 
+    /* Fundo gradiente para leitura */
     .panel .panel-content {
-        background: linear-gradient(to top, rgba(0,0,0,0.9) 20%, transparent 100%);
+        background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, transparent 100%);
     }
 
-    /* Texto e Ícones sempre visíveis */
+    /* Texto e ícones fixos */
     .panel p {
-        opacity: 1;
-        transform: translateY(0);
-        font-size: 14px;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        font-size: 13px;
+        margin-bottom: 0;
     }
     
     .panel .icon-box {
-        transform: translateY(0); /* Ícone no lugar certo */
-        margin-bottom: 10px;
-        font-size: 32px;
+        transform: translateY(0) !important;
+        margin-bottom: 5px;
+        font-size: 28px;
     }
-
-    /* Traz as cores Neon de volta para cada categoria */
-    .panel.store .icon-box { color: var(--neon-store); text-shadow: 0 0 10px var(--neon-store); }
-    .panel.store { border-bottom: 2px solid var(--neon-store); }
-
-    .panel.dev .icon-box { color: var(--neon-dev); text-shadow: 0 0 10px var(--neon-dev); }
-    .panel.dev { border-bottom: 2px solid var(--neon-dev); }
-
-    .panel.manga .icon-box { color: var(--neon-manga); text-shadow: 0 0 10px var(--neon-manga); }
-    .panel.manga { border-bottom: 2px solid var(--neon-manga); }
-
-    /* Remove a expansão "pulo" ao clicar no mobile */
-    .panel:hover {
-        flex: none;
-        height: 250px;
-    }
+    
+    /* Cores dos ícones sempre ativas */
+    .panel.store .icon-box { color: var(--neon-store); }
+    .panel.dev .icon-box { color: var(--neon-dev); }
+    .panel.manga .icon-box { color: var(--neon-manga); }
 }
     </style>
 </head>
@@ -346,4 +362,5 @@
 </script>
 </body>
 </html>
+
 
