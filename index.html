@@ -210,13 +210,77 @@
             letter-spacing: 2px;
         }
 
-        @media (max-width: 900px) {
-             h1 { font-size: 3rem; }
-            .gateway-container { flex-direction: column; height: auto; }
-            .panel { height: 250px; width: 100%; clip-path: none; }
-            .panel:hover { flex: unset; height: 300px; }
-            .panel p { opacity: 1; transform: translateY(0); } /* Texto sempre visível no mobile */
-        }
+/* --- MOBILE SUPPORT (CORRIGIDO) --- */
+@media (max-width: 900px) {
+    
+    /* 1. Corrige o scroll e o corte de tela no mobile */
+    body {
+        justify-content: flex-start; /* Começa do topo, permite scroll */
+        padding-top: 40px;
+        padding-bottom: 40px;
+        height: auto; /* Altura se adapta ao conteúdo */
+    }
+
+    h1 { font-size: 3rem; margin-bottom: 20px; }
+    
+    /* 2. Organiza os painéis em coluna */
+    .gateway-container {
+        flex-direction: column;
+        height: auto;
+        gap: 30px; /* Espaço entre os cards */
+        margin-bottom: 40px;
+    }
+
+    /* 3. Estilo do Card no Mobile (Sem hover, sempre ativo) */
+    .panel {
+        flex: none; /* IMPORTANTE: Impede o card de sumir/colapsar */
+        width: 100%;
+        height: 250px; /* Altura fixa garantida */
+        clip-path: none; /* Remove o corte angular */
+        border: 1px solid #333;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    /* Efeitos visuais sempre ativos (sem precisar clicar) */
+    .panel .panel-bg {
+        filter: grayscale(0%) brightness(0.6); /* Imagem colorida, mas escura o suficiente para ler */
+        transform: scale(1);
+    }
+
+    .panel .panel-content {
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 20%, transparent 100%);
+    }
+
+    /* Texto e Ícones sempre visíveis */
+    .panel p {
+        opacity: 1;
+        transform: translateY(0);
+        font-size: 14px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    
+    .panel .icon-box {
+        transform: translateY(0); /* Ícone no lugar certo */
+        margin-bottom: 10px;
+        font-size: 32px;
+    }
+
+    /* Traz as cores Neon de volta para cada categoria */
+    .panel.store .icon-box { color: var(--neon-store); text-shadow: 0 0 10px var(--neon-store); }
+    .panel.store { border-bottom: 2px solid var(--neon-store); }
+
+    .panel.dev .icon-box { color: var(--neon-dev); text-shadow: 0 0 10px var(--neon-dev); }
+    .panel.dev { border-bottom: 2px solid var(--neon-dev); }
+
+    .panel.manga .icon-box { color: var(--neon-manga); text-shadow: 0 0 10px var(--neon-manga); }
+    .panel.manga { border-bottom: 2px solid var(--neon-manga); }
+
+    /* Remove a expansão "pulo" ao clicar no mobile */
+    .panel:hover {
+        flex: none;
+        height: 250px;
+    }
+}
     </style>
 </head>
 <body>
@@ -282,3 +346,4 @@
 </script>
 </body>
 </html>
+
