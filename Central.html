@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlackDz Central Hub</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;800&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #020202;
+            --text-color: #fff;
+            
+            /* Cores Neon */
+            --neon-store: #ff1a1a;
+            --neon-dev: #00ff9d;
+            --neon-manga: #8a2be2;
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Fundo mais complexo e tecnológico */
+            background-image: 
+                radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 80%),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 30px),
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 30px);
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            z-index: 10;
+        }
+
+        h1 {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 800;
+            font-size: 4.5rem;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin: 0;
+            /* Efeito de texto metálico/gradiente */
+            background: linear-gradient(to bottom, #ffffff, #888888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            font-weight: 700;
+        }
+
+        /* Container dos Painéis */
+        .gateway-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: stretch;
+            height: 500px;
+            max-width: 1200px;
+            width: 100%;
+            z-index: 10;
+        }
+
+        /* Estilo do Painel (antigo Card) */
+        .panel {
+            position: relative;
+            flex: 1; /* Todos começam com o mesmo tamanho */
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid #333;
+            /* Corte angular futurista */
+            clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10% );
+            background: #0a0a0a;
+        }
+
+        /* Imagem de fundo do Painel */
+        .panel-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            /* Começa em preto e branco e escuro */
+            filter: grayscale(100%) brightness(0.4);
+            transform: scale(1.05);
+            transition: all 0.5s ease;
+        }
+
+        /* Overlay gradiente para o texto */
+        .panel-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, transparent 70%);
+            z-index: 2;
+        }
+
+        /* Conteúdo interno */
+        .panel-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 100%;
+        }
+
+        .icon-box {
+            font-size: 40px;
+            margin-bottom: 20px;
+            transition: 0.5s;
+            text-shadow: 0 0 20px currentColor;
+        }
+
+        .panel h2 {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 800;
+            font-size: 32px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .panel p {
+            font-size: 14px;
+            color: #ccc;
+            opacity: 0.8;
+            max-width: 90%;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: 0.5s 0.1s; /* Delay para aparecer */
+        }
+
+        /* --- HOVER EFFECTS (A Mágica) --- */
+
+        /* Quando passa o mouse no container, os que NÃO estão em hover diminuem */
+        .gateway-container:hover .panel:not(:hover) {
+            flex: 0.8;
+            filter: brightness(0.7);
+        }
+
+        /* O painel em HOVER expande */
+        .panel:hover {
+            flex: 2; /* Fica 2x maior que os outros */
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); /* Remove os cortes angulares ao expandir */
+            border-color: transparent;
+        }
+
+        /* Traz a cor da imagem de volta e aplica zoom */
+        .panel:hover .panel-bg {
+            filter: grayscale(0%) brightness(1);
+            transform: scale(1.15);
+        }
+
+        /* Move o ícone e mostra o texto */
+        .panel:hover .icon-box { transform: translateY(-10px) scale(1.1); }
+        .panel:hover p { transform: translateY(0); opacity: 1; }
+
+
+        /* --- Cores Específicas --- */
+
+        /* STORE (Vermelho) */
+        .panel.store { border-bottom: 3px solid var(--neon-store); }
+        .panel.store .icon-box { color: var(--neon-store); }
+        .panel.store:hover { box-shadow: 0 0 50px rgba(255, 26, 26, 0.5); }
+
+        /* DEV (Verde) */
+        .panel.dev { border-bottom: 3px solid var(--neon-dev); }
+        .panel.dev .icon-box { color: var(--neon-dev); }
+        .panel.dev:hover { box-shadow: 0 0 50px rgba(0, 255, 157, 0.4); }
+
+        /* MANGA (Roxo) */
+        .panel.manga { border-bottom: 3px solid var(--neon-manga); }
+        .panel.manga .icon-box { color: var(--neon-manga); }
+        .panel.manga:hover { box-shadow: 0 0 50px rgba(138, 43, 226, 0.5); }
+
+
+        footer {
+            margin-top: 60px;
+            color: #555;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 900px) {
+             h1 { font-size: 3rem; }
+            .gateway-container { flex-direction: column; height: auto; }
+            .panel { height: 250px; width: 100%; clip-path: none; }
+            .panel:hover { flex: unset; height: 300px; }
+            .panel p { opacity: 1; transform: translateY(0); } /* Texto sempre visível no mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>BlackDz<span>.Hub</span></h1>
+        <div class="subtitle">Onde Quer Ir?</div>
+    </header>
+
+    <div class="gateway-container">
+        
+        <a href="https://blackdzdev.github.io/BlackDz-Store/" target="_blank" class="panel store">
+            <div class="panel-bg" style="background-image: url('https://cdn.discordapp.com/attachments/1358131089280864286/1464436786288918713/1_Sem_Titulo_20260123224837.png?ex=697a13c9&is=6978c249&hm=1ad9c41f054eb3d587774987e9921113d1b01c651bff82e0ed4d64afe89df0bf&');"></div>
+            <div class="panel-overlay"></div>
+            <div class="panel-content">
+                <div class="icon-box"><i class="fas fa-cart-shopping"></i></div>
+                <h2>BlackDz Store</h2>
+                <p>Contas, Scripts DBC, Métodos e Streamings. Entrega imediata.</p>
+            </div>
+        </a>
+
+        <a href="https://blackdzdev.github.io/Sobre-Mim/" target="_blank" class="panel dev">
+            <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop');"></div>
+            <div class="panel-overlay"></div>
+            <div class="panel-content">
+                <div class="icon-box"><i class="fas fa-terminal"></i></div>
+                <h2>Portifolio BlackDz</h2>
+                <p>Eduardo (Dz/Mikey). Programador, Java, JavaScript, HTML etc.</p>
+            </div>
+        </a>
+
+        <a href="https://blackdzdev.github.io/Kowareta-No-Mirai/" target="_blank" class="panel manga">
+            <div class="panel-bg" style="background-image: url('https://cdn.discordapp.com/attachments/1421605269926051840/1465078890715418897/AOI_d_-6Kdnm8Glatfuw4xmQYBmZdzlnDUYcdRJ_XRcPKUsg93HnpbwrxKWOfpFUAlMW9IXR6qm_FccKz0ezaqteLCWyfLxiYelK7E--NYxn4mwOhZTqiLKJl7m3Xwz4LZxi7DkH4urS3b8X9CI6ALmS5FiGxcNZ1trlylI95uKuELYb9_hCTQs1024-rj.png?ex=697a6f8b&is=69791e0b&hm=3aee2f840156adf6bb10740b10ca640e219d1e74accc2941a7e8f2743c391ccd&');"></div>
+            <div class="panel-overlay"></div>
+            <div class="panel-content">
+                <div class="icon-box"><i class="fas fa-book-skull"></i></div>
+                <h2>Meu Livro - Mangá</h2>
+                <p>Kowareta No Mirai, Meu livro e Meu Mangá</p>
+            </div>
+        </a>
+
+    </div>
+
+    <footer>
+        2026 © BlackDz Hub
+    </footer>
+<script>
+  // Bloqueia o botão direito do mouse
+  document.addEventListener('contextmenu', event => event.preventDefault());
+
+  // Bloqueia atalhos de teclado (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U)
+  document.onkeydown = function(e) {
+    if (e.keyCode == 123) { // F12
+      return false;
+    }
+    if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) {
+      return false;
+    }
+    if (e.ctrlKey && (e.keyCode == 'U'.charCodeAt(0))) { // Ctrl+U (Ver Fonte)
+      return false;
+    }
+  }
+</script>
+</body>
+</html>
